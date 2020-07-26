@@ -5,3 +5,6 @@ tflMap
 .idea/tflMap.iml
 .vscode/settings.json
 json/conf.json
+lines.txt
+stations.txt
+api/urls.txt
