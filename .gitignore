@@ -8,3 +8,5 @@ json/conf.json
 lines.txt
 stations.txt
 api/urls.txt
+json/lines.json
+json/stations.json
