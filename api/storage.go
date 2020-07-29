@@ -11,12 +11,12 @@ import (
 
 func loadPredictionSummary() error {
 	PredictionSummary := PredictionSummary{}
-	return loadJSON("config.json", PredictionSummary)
+	return LoadJSON("config.json", PredictionSummary)
 }
 
 func savePredictionSummary() error {
 	PredictionSummary := PredictionSummary{}
-	return saveJSON("config.json", PredictionSummary)
+	return SaveJSON("config.json", PredictionSummary)
 }
 
 // func cleanup() {
@@ -28,7 +28,7 @@ func savePredictionSummary() error {
 // 	log.Info("Done cleanup. Exiting.")
 // }
 
-func loadJSON(path string, v interface{}) error {
+func LoadJSON(path string, v interface{}) error {
 	f, err := os.OpenFile("json/"+path, os.O_RDONLY, 0600)
 	if err != nil {
 		log.Error("error loading", path, err)
@@ -42,7 +42,7 @@ func loadJSON(path string, v interface{}) error {
 	return nil
 }
 
-func saveJSON(path string, data interface{}) error {
+func SaveJSON(path string, data interface{}) error {
 	f, err := os.OpenFile("json/"+path, os.O_WRONLY|os.O_CREATE, 0600)
 	if err != nil {
 		log.Error("error saving", path, err)
@@ -57,8 +57,8 @@ func saveJSON(path string, data interface{}) error {
 }
 
 func loadConfig() error {
-	return loadJSON("config.json", conf)
+	return LoadJSON("config.json", conf)
 }
 func saveConfig() error {
-	return saveJSON("config.json", conf)
+	return SaveJSON("config.json", conf)
 }

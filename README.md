@@ -120,3 +120,9 @@ NOw i need the lat and long of a stop id for the  station
 i can use /StopPoint/{point} to get lat and long
 
 this can then be plotted on a map somehow
+
+## TODO
+* Store list of tube line names and codes in struct and save in json file
+* make way of generating the above file
+
+* take 

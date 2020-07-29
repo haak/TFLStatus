@@ -16,7 +16,7 @@ var (
 )
 
 const baseURL = "https://api.tfl.gov.uk"
-const baseURL2 = "http://cloud.tfl.gov.uk/TrackerNet"
+// const baseURL2 = "http://cloud.tfl.gov.uk/TrackerNet"
 
 // Client is a TFL api client
 type Client struct {
@@ -86,16 +86,14 @@ func (m *ModeService) GetModesAlone() {
 // ###############################################
 
 // LineService represents a Line
-type LineService struct {
-	sling *sling.Sling
-}
+
 
 // NewLineService represents things
-func NewLineService(httpClient *http.Client) *LineService {
-	return &LineService{
-		sling: sling.New().Client(httpClient).Base(baseURL2),
-	}
-}
+// func NewLineService(httpClient *http.Client) *LineService {
+// 	return &LineService{
+// 		sling: sling.New().Client(httpClient).Base(baseURL2),
+// 	}
+// }
 
 // GetLineInformation
 // func (l *LineService)GetLineInformation(line string){
@@ -165,16 +163,16 @@ func getRequest(URL string ) (http.Response, error) {
 
 
 // GetSummaryPrediction returns a prediction for a line
-func GetSummaryPrediction(line string  ) (prediction PredictionSummary) {
-	summaryURL := "/PredictionSummary"
-	url := baseURL2 + summaryURL + "/" + line
-	getRequest(url)
-	log.Info(url)
-	// resp, err := http.Get(url)
-	// log.Info(resp)
-	// log.Info(err)
-	return prediction
-}
+// func GetSummaryPrediction(line string  ) (prediction PredictionSummary) {
+// 	summaryURL := "/PredictionSummary"
+// 	url := baseURL2 + summaryURL + "/" + line
+// 	getRequest(url)
+// 	log.Info(url)
+// 	// resp, err := http.Get(url)
+// 	// log.Info(resp)
+// 	// log.Info(err)
+// 	return prediction
+// }
 
 // GetLines will return a string which contains all the tube lines and their code
 func GetLines() string{
