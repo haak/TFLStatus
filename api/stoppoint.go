@@ -38,3 +38,6 @@ func (s StopPointService) PointArrivals(stopPoint string) (*ArrivalsResponse, *h
 	log.Info(ArrivalsResponse)
 	return ArrivalsResponse, resp, err
 }
+
+
+

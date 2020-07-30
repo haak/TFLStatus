@@ -13,7 +13,6 @@ const lineURL = "https://api.tfl.gov.uk/line/"
 
 // This makes use of the ArrivalsResponse struct
 
-
 //Services
 
 type LineService struct {
@@ -39,14 +38,33 @@ func (l *LineService) LineArrivals(line string) (*ArrivalsResponse, *http.Respon
 	return ArrivalsResponse, resp, err
 }
 
-
-func (l *LineService) getStopPoints(line string){
+func (l *LineService) GetStopPoints(line string) {
 	//https://api.tfl.gov.uk/line/victoria/StopPoints
+	LineStopPointsResponse := new(LineStopPoints)
 	///Line/{id}/StopPoints
+	error := new(error)
 	path := line + "/StopPoints"
-	// resp, err := l.sling.New().Get(path).Receive(ArrivalsResponse, error)
-	// if err != nil {
-	// 	panic(err)
-	// }
+	_, err := l.sling.New().Get(path).Receive(LineStopPointsResponse, error)
+	// log.Info(resp)
+	log.Info(LineStopPointsResponse)
+	if err != nil {
+		
+	}
 
 }
+
+
+func (l *LineService) TimetableForStop(stopPoint, line string){
+	// /Line/{id}/Timetable/{fromStopPointId}
+
+	// https://api.tfl.gov.uk/line/victoria/Arrivals/940GZZLUEUS
+	// This uses same as 
+
+	return 
+
+	//Get the list of arrival predictions for given line ids based at the given stop
+	// /Line/{ids}/Arrivals/{stopPointId}
+}
+
+
+//https://api.tfl.gov.uk/Line/victoria/Timetable/940GZZLUKSX

@@ -185,7 +185,7 @@ type Timing struct {
 // Line.go /line/{id}/StopPoint
 
 type LineStopPoints []struct {
-	Type                 string                 `json:"$type"`
+	Type                 string                 `json:NaptanID"$type"`
 	NaptanID             string                 `json:"naptanId"`
 	Modes                []string               `json:"modes"`
 	IcsCode              string                 `json:"icsCode"`

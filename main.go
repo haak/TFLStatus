@@ -23,18 +23,20 @@ func main() {
 	// client.ModeService.GetModesAlone()
 	// client.LineService.GetLineInformation("W")
 	// api.GetLineInfo()
-	client.LineService.LineArrivals("victoria")
+	// client.LineService.LineArrivals("victoria")
+	client.LineService.GetStopPoints("victoria")
+
 	wordPtr := flag.String("line", "H", "London Tube line")
 	flag.Parse()
 	log.Info(*wordPtr)
-	station := *wordPtr
-	log.Info("station: ", station)
+	// station := *wordPtr
+	// log.Info("station: ", station)
 	// api.GetSummaryPrediction(station)
 
 	// marshallMap(stationCodeToName, "stations.json")
 
-	api.SaveJSON("stations.json", stationCodeToName)
-	api.SaveJSON("lines.json", lineCodeToName)
+	// api.SaveJSON("stations.json", stationCodeToName)
+	// api.SaveJSON("lines.json", lineCodeToName)
 
 	// CloseApp()
 

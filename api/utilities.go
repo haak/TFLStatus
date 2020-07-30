@@ -34,3 +34,21 @@ func (a *ArrivalsResponse) String() string {
 func (a *ArrivalsResponse) JSON() string {
 	return ""
 }
+
+
+func (l *LineStopPoints) String() string {
+	output := ""
+	output += "Stop Points for a Line \n"
+	for _, stopPoint := range *l {
+		output += "Name: " + stopPoint.CommonName + "\n"
+		output += "NaptanID: " + stopPoint.NaptanID + "\n"
+		// string += "NaptanID: " + stopPoint.Lines.s + "\n"
+		// need to add in option for multiple lines that appear at a station
+		
+		output += "Latitude: " + strconv.FormatFloat(stopPoint.Lat, 'f', -1, 64) + "\n"
+		output += "Longitude: " + strconv.FormatFloat(stopPoint.Lon, 'f', -1, 64) + "\n"
+		output += "\n"
+		
+	}
+	return output
+}

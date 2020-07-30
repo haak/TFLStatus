@@ -10,12 +10,12 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-
 var (
 	conf = new(Config)
 )
 
 const baseURL = "https://api.tfl.gov.uk"
+
 // const baseURL2 = "http://cloud.tfl.gov.uk/TrackerNet"
 
 // Client is a TFL api client
@@ -48,8 +48,6 @@ type TFLError struct {
 type ModeService struct {
 	sling *sling.Sling
 }
-
-
 
 // NewModeService returns a new ModeService
 func NewModeService(httpClient *http.Client) *ModeService {
@@ -86,7 +84,6 @@ func (m *ModeService) GetModesAlone() {
 // ###############################################
 
 // LineService represents a Line
-
 
 // NewLineService represents things
 // func NewLineService(httpClient *http.Client) *LineService {
@@ -141,8 +138,7 @@ func GetLineInfo() {
 // when we are making a client
 // it has methods on it
 
-
-func getRequest(URL string ) (http.Response, error) {
+func getRequest(URL string) (http.Response, error) {
 	resp, err := http.Get(URL)
 	log.Info(&resp.Body)
 	log.Info(err)
@@ -161,7 +157,6 @@ func getRequest(URL string ) (http.Response, error) {
 	return *resp, err
 }
 
-
 // GetSummaryPrediction returns a prediction for a line
 // func GetSummaryPrediction(line string  ) (prediction PredictionSummary) {
 // 	summaryURL := "/PredictionSummary"
@@ -175,7 +170,7 @@ func getRequest(URL string ) (http.Response, error) {
 // }
 
 // GetLines will return a string which contains all the tube lines and their code
-func GetLines() string{
+func GetLines() string {
 	line := ""
 	code := ""
 	// This will return a list of train lines and their codes
@@ -183,7 +178,4 @@ func GetLines() string{
 	return line
 }
 
-
-
 // https://api.tfl.gov.uk/StopPoint/490008376N/arrivals
-
