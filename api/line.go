@@ -48,17 +48,27 @@ func (l *LineService) GetStopPoints(line string) {
 	// log.Info(resp)
 	log.Info(LineStopPointsResponse)
 	if err != nil {
-		
+		// log.Panic("We have an error:", err)
 	}
 
 }
 
-
-func (l *LineService) TimetableForStop(stopPoint, line string){
-	// /Line/{id}/Timetable/{fromStopPointId}
+// TimetableForStop returns an ArrivalResponse for the trains that are arriv
+func (l *LineService) TimetableForStop(line, stopPoint string){
+//e.g. https://api.tfl.gov.uk/line/victoria/Arrivals/940GZZLUBLR
+	ArrivalsResponse := new(ArrivalsResponse)
+	error := new(error)
+	path := line + "/arrivals/" + stopPoint
+	_, err := l.sling.New().Get(path).Receive(ArrivalsResponse, error)
+	if err != nil {
+		// log.Panic("We have an error:", err)
+	}
+	log.Info(ArrivalsResponse)
+	// This uses the same thing as LineArrivals()
+	// /Line/{id}/Timetable/{fromStopPointId} THIS DOES NOT WORK
 
 	// https://api.tfl.gov.uk/line/victoria/Arrivals/940GZZLUEUS
-	// This uses same as 
+	// WE ARE GOING TO USE THIS INSTEAD
 
 	return 
 

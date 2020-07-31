@@ -24,11 +24,16 @@ func main() {
 	// client.LineService.GetLineInformation("W")
 	// api.GetLineInfo()
 	// client.LineService.LineArrivals("victoria")
-	client.LineService.GetStopPoints("victoria")
-
+	// client.LineService.GetStopPoints("victoria")
+	// client.LineService.TimetableForStop("victoria","940GZZLUBLR" )
+	client.ModeService.GetModes()
 	wordPtr := flag.String("line", "H", "London Tube line")
+	boolPtr := flag.Bool("modes", false, "a bool")
+
+
 	flag.Parse()
 	log.Info(*wordPtr)
+	api.ListModes()
 	// station := *wordPtr
 	// log.Info("station: ", station)
 	// api.GetSummaryPrediction(station)

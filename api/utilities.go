@@ -18,12 +18,13 @@ func (a *ArrivalsResponse) String() string {
 	fmt.Println(string(colorRed), "test")
 	string := ""
 	for _, arrivals := range *a {
+		string += "stationName: " + arrivals.StationName + "\n"
 		string += "vehicleId: " + arrivals.VehicleID + "\n"
 		string += "naptanID: " + arrivals.NaptanID + "\n"
-		string += "stationName: " + arrivals.StationName + "\n"
 		string += "lineID: " + arrivals.LineID + "\n"
 		string += "destination: " + arrivals.DestinationName + "\n"
 		string += "Time To Station: " + strconv.Itoa(arrivals.TimeToStation) + "\n"
+		string += "direction: " + arrivals.Direction + "\n"
 		string += "\n"
 		
 	}
@@ -50,5 +51,10 @@ func (l *LineStopPoints) String() string {
 		output += "\n"
 		
 	}
+	return output
+}
+
+func (m *Mode) String() string {
+	output := ""
 	return output
 }
