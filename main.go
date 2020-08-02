@@ -29,11 +29,13 @@ func main() {
 	client.ModeService.GetModes()
 	wordPtr := flag.String("line", "H", "London Tube line")
 	boolPtr := flag.Bool("modes", false, "a bool")
-
+	// listModes := *boolPtr
 
 	flag.Parse()
 	log.Info(*wordPtr)
-	api.ListModes()
+	log.Info("\n")
+	log.Info(*boolPtr)
+	// api.ListModes()
 	// station := *wordPtr
 	// log.Info("station: ", station)
 	// api.GetSummaryPrediction(station)
@@ -44,6 +46,11 @@ func main() {
 	// api.SaveJSON("lines.json", lineCodeToName)
 
 	// CloseApp()
+
+	if *boolPtr == true {
+		log.Info("help")
+
+	}
 
 }
 
