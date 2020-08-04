@@ -179,8 +179,6 @@ type Timing struct {
 	Received                  string    `json:"received"`
 }
 
-
-
 // #############################################################################
 // Line.go /line/{id}/StopPoint
 
@@ -256,3 +254,23 @@ type Children struct {
 
 // use line to find all stations
 // then use stop points to find lat and long and map them
+
+
+type ModeLines []struct {
+	Type          string         `json:"$type"`
+	ID            string         `json:"id"`
+	Name          string         `json:"name"`
+	ModeName      string         `json:"modeName"`
+	Disruptions   []interface{}  `json:"disruptions"`
+	Created       time.Time      `json:"created"`
+	Modified      time.Time      `json:"modified"`
+	LineStatuses  []interface{}  `json:"lineStatuses"`
+	RouteSections []interface{}  `json:"routeSections"`
+	ServiceTypes  []ServiceTypes `json:"serviceTypes"`
+	Crowding      Crowding       `json:"crowding"`
+}
+type ServiceTypes struct {
+	Type string `json:"$type"`
+	Name string `json:"name"`
+	URI  string `json:"uri"`
+}

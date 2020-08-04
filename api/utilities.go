@@ -54,7 +54,3 @@ func (l *LineStopPoints) String() string {
 	return output
 }
 
-func (m *Mode) String() string {
-	output := ""
-	return output
-}

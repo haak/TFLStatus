@@ -126,3 +126,15 @@ this can then be plotted on a map somehow
 * make way of generating the above file
 
 * take 
+
+
+## Command Line Arguments
+-modes
+
+-mode
+
+-lines
+-line
+
+-stations
+need to supply both a line and -stations to get the stations for a line

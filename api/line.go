@@ -54,8 +54,8 @@ func (l *LineService) GetStopPoints(line string) {
 }
 
 // TimetableForStop returns an ArrivalResponse for the trains that are arriv
-func (l *LineService) TimetableForStop(line, stopPoint string){
-//e.g. https://api.tfl.gov.uk/line/victoria/Arrivals/940GZZLUBLR
+func (l *LineService) TimetableForStop(line, stopPoint string) {
+	//e.g. https://api.tfl.gov.uk/line/victoria/Arrivals/940GZZLUBLR
 	ArrivalsResponse := new(ArrivalsResponse)
 	error := new(error)
 	path := line + "/arrivals/" + stopPoint
@@ -70,11 +70,53 @@ func (l *LineService) TimetableForStop(line, stopPoint string){
 	// https://api.tfl.gov.uk/line/victoria/Arrivals/940GZZLUEUS
 	// WE ARE GOING TO USE THIS INSTEAD
 
-	return 
+	return
 
 	//Get the list of arrival predictions for given line ids based at the given stop
 	// /Line/{ids}/Arrivals/{stopPointId}
 }
 
+func (l *LineService) GetLinesForMode(mode string) {
+	// /Line/Mode/{modes}
+	ModeLines := new(ModeLines)
+	tflError := new(TFLError)
+	path := "/line/mode/" + mode
+	resp, err := l.sling.New().Get(path).Receive(ModeLines, tflError)
+
+	log.Info(err)
+	log.Info(resp.Body)
+	log.Info(ModeLines)
+
+}
 
 //https://api.tfl.gov.uk/Line/victoria/Timetable/940GZZLUKSX
+
+func (m *ModeLines) String() string {
+	output := ""
+	output += "lines available \n"
+	for _, modeLine := range *m {
+		output += "Name: " + modeLine.Name + "\n"
+		output += "ID: " + modeLine.ID + "\n"
+		output += "mode: " + modeLine.ModeName + "\n"
+
+		// output += "Route Sections: " + modeLine.RouteSections + "\n"
+
+		// output += "Name: " + modeLine.ServiceTypes.String() + "\n"
+
+		for _, serviceType := range modeLine.ServiceTypes {
+			output += serviceType.String()
+		}
+
+		output += "\n"
+	}
+	return output
+}
+
+func (s ServiceTypes) String() string {
+	output := ""
+	output += "Service Type: " + s.Name + "\n"
+	return output
+
+}
+
+

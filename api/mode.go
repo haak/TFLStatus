@@ -24,11 +24,15 @@ func (m *ModeService) GetModes() *Modes {
 	// returns []Modes, *http.Response, error
 	modes := new(Modes)
 	error := new(TFLError)
-	resp, err := m.sling.New().Path("/Line/Meta/Modes").Receive(modes, error)
-	log.Info(resp.Body)
-	log.Info(err)
+	_, err := m.sling.New().Path("/Line/Meta/Modes").Receive(modes, error)
+	// log.Info(sling.path)
+	// log.Info(resp.Body)
+	if err != nil {
+		log.Info(err)
+	}
+	// log.Info(err)
 	log.Info(modes)
-	log.Info(error)
+	// log.Info(error)
 	return modes
 	// does things
 }
@@ -65,3 +69,13 @@ func (m *ModeService) GetModesAlone() {
 // 	log.Info(err)
 
 // }
+
+func (m *Modes) String() string {
+	output := ""
+	output += "modes available \n"
+	for _, mode := range *m {
+		output += "Name: " + mode.ModeName + "\n"
+		// output += "\n"
+	}
+	return output
+}
