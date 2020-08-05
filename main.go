@@ -1,3 +1,13 @@
+// For this im going to use gocui for the userinterface and the 
+// gocui
+// log logrus 
+// sling "github.com/dghubble/sling"
+// im not going to need anything else
+// i should be able to create the map using the gocui thing
+// i think ill make like a wireframe map that can be used to show all the trains or just the stations and trains nearby 
+
+
+
 package main
 
 import (
