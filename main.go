@@ -1,12 +1,10 @@
-// For this im going to use gocui for the userinterface and the 
+// For this im going to use gocui for the userinterface and the
 // gocui
-// log logrus 
+// log logrus
 // sling "github.com/dghubble/sling"
 // im not going to need anything else
 // i should be able to create the map using the gocui thing
-// i think ill make like a wireframe map that can be used to show all the trains or just the stations and trains nearby 
-
-
+// i think ill make like a wireframe map that can be used to show all the trains or just the stations and trains nearby
 
 package main
 
@@ -207,9 +205,7 @@ func layout(g *gocui.Gui) error {
 
 	}
 
-
-
-	if v, err := g.SetView("main", maxX/4, 0, maxX*3/4, maxY, 0 ); err != nil{
+	if v, err := g.SetView("main", maxX/4, 0, maxX*3/4, maxY, 0); err != nil {
 		if !gocui.IsUnknownView(err) {
 			return err
 		}
@@ -249,5 +245,15 @@ func keybindings(g *gocui.Gui) error {
 		log.Panicln(err)
 	}
 
+	if err := g.SetKeybinding("", gocui.KeyTab, gocui.ModNone, nextView); err != nil {
+		log.Panicln(err)
+	}
+
+	
+
 	return nil
+}
+
+func nextView(g *gocui.Gui, v *gocui.View) error {
+
 }
