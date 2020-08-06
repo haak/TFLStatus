@@ -20,6 +20,11 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+var (
+	viewArr = []string{"modes", "lines", "main", "hello"}
+	activeViewIndex  = 0
+)
+
 func main() {
 
 	stationCodeToName := make(map[string]string)
@@ -177,6 +182,11 @@ func layout(g *gocui.Gui) error {
 		if !gocui.IsUnknownView(err) {
 			return err
 		}
+		g.Highlight = true
+		g.SelFgColor = gocui.ColorGreen
+		g.SelBgColor = gocui.ColorRed
+
+
 		v.Title = "Modes"
 		v.Highlight = true
 		v.SelBgColor = gocui.ColorGreen
@@ -249,11 +259,37 @@ func keybindings(g *gocui.Gui) error {
 		log.Panicln(err)
 	}
 
-	
-
 	return nil
 }
 
 func nextView(g *gocui.Gui, v *gocui.View) error {
+	nextViewIndex := (activeViewIndex +1) % len(viewArr)
+	name := viewArr[nextViewIndex]
+	out, err := g.View("main")
+	if err != nil {
+		return err
+	}
+	fmt.Fprintln(out, "Going from view "+v.Name()+" to "+name)
 
+
+	if _, err := setCurrentViewOnTop(g, name); err != nil {
+		return err
+	}
+
+	if nextViewIndex == 0 || nextViewIndex == 3 {
+		g.Cursor = true
+	} else {
+		g.Cursor = false
+	}
+
+	activeViewIndex = nextViewIndex
+	return nil
+}
+
+
+func setCurrentViewOnTop(g *gocui.Gui, name string) (*gocui.View, error) {
+	if _, err := g.SetCurrentView(name); err != nil {
+		return nil, err
+	}
+	return g.SetViewOnTop(name)
 }
