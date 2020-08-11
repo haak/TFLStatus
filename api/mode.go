@@ -31,22 +31,34 @@ func (m *ModeService) GetModes() *Modes {
 		log.Info(err)
 	}
 	// log.Info(err)
-	log.Info(modes)
+	// log.Info(modes)
 	// log.Info(error)
 	return modes
 	// does things
 }
 
 // GetModesAlone returns the modes from TFL api
-func (m *ModeService) GetModesAlone() {
+func (m *ModeService) GetModesAlone() *Modes {
 	modes := m.GetModes()
-	for mode, element := range *modes {
-		log.Info(element, " : ", mode)
-		// log.Info(element)
-
-	}
+	// for mode, element := range *modes {
+		
+	// 	// log.Info(element, " : ", mode)
+	// 	// log.Info(element)
+		
+	// }
+	return modes
 
 }
+
+// func (m *ModeService) GetModesList() {
+// 	modes := m.GetModes()
+
+// 	for mode, element := range *modes {
+// 		log.Info(element, " : ", mode)
+// 		// log.Info(element)
+
+// 	}
+// }
 
 // ###############################################
 

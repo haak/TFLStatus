@@ -17,12 +17,15 @@ import (
 
 	"github.com/awesome-gocui/gocui"
 	"github.com/haak/tflMap/api"
+	"github.com/haak/tflMap/gui"
 	log "github.com/sirupsen/logrus"
+	// "github.com/jroimartin/gocui"
 )
 
 var (
-	viewArr = []string{"modes", "lines", "main", "hello"}
-	activeViewIndex  = 0
+	// viewArr = []string{"modes", "lines", "main", "hello"}
+	viewArr         = []string{"modes", "lines", "main", "unknown"}
+	activeViewIndex = 0
 )
 
 func main() {
@@ -34,7 +37,7 @@ func main() {
 	lineCodeToName["V"] = "Victoria"
 
 	client := api.NewClient(nil)
-	// client.ModeService.GetModesAlone()
+	client.ModeService.GetModesAlone()
 	// client.LineService.GetLineInformation("W")
 	// api.GetLineInfo()
 	// client.LineService.LineArrivals("victoria")
@@ -57,6 +60,14 @@ func main() {
 
 	stationsBoolPtr := flag.Bool("stations", false, "if true list stations")
 
+	debugBoolPtr := flag.Bool("debug", false, "this is used to enable debug features")
+
+	guiBoolPtr := flag.Bool("gui", false, "this is used to enable gui features")
+
+	logoBoolPtr := flag.Bool("logo", false, "this is used to enable logo features")
+
+
+
 	// listModes := *boolPtr
 
 	flag.Parse()
@@ -64,7 +75,7 @@ func main() {
 	// log.Info("\n")
 	// log.Info(*modesBoolPtr)
 	// api.ListModes()
-	// station := *wordPtr
+	// station := *wordPtr2
 	// log.Info("station: ", station)
 	// api.GetSummaryPrediction(station)
 
@@ -78,7 +89,7 @@ func main() {
 	// Calling -modes
 	if *modesBoolPtr == true {
 		//  call func to list modes
-		client.ModeService.GetModes()
+		client.ModeService.GetModesAlone()
 		// log.Info("help")
 		// log.Info("mode string pointer: ", *modesStringPtr)
 
@@ -100,7 +111,17 @@ func main() {
 		// Get stations for line
 	}
 
-	gui()
+	if *debugBoolPtr == true {
+		// do debug things here
+	}
+
+	if *guiBoolPtr == true {
+		createGui()
+	}
+
+	if *logoBoolPtr == true {
+		printLogo()
+	}
 
 }
 
@@ -152,8 +173,8 @@ func CloseApp() {
 // https://api.tfl.gov.uk/Line/Route?ids=Bakerloo&serviceTypes=Regular
 // dont know exactly what this returns
 
-func gui() {
-	g, err := gocui.NewGui(gocui.OutputNormal, false)
+func createGui() {
+	g, err := gocui.NewGui(gocui.Output256, false)
 	if err != nil {
 		log.Panicln(err)
 	}
@@ -184,14 +205,30 @@ func layout(g *gocui.Gui) error {
 		}
 		g.Highlight = true
 		g.SelFgColor = gocui.ColorGreen
-		g.SelBgColor = gocui.ColorRed
 
+		// Text colours
+		// g.FgColor = gocui.ColorBlack
+
+		// g.SelBgColor = gocui.ColorBlack
+		// This sets the fram colour
+
+		// This changes frame colour of the selected frame
+		g.SelFrameColor = gocui.ColorGreen
+		// g.SelFrameColor = gocui.ColorYellow
+
+		g.FrameColor = gocui.ColorDefault
 
 		v.Title = "Modes"
+		// v.Highlight = true
+		// v.SelBgColor = gocui.ColorGreen
+		// v.SelFgColor = gocui.ColorBlack
+
 		v.Highlight = true
 		v.SelBgColor = gocui.ColorGreen
-		v.SelFgColor = gocui.ColorBlack
-		fmt.Fprintln(v, "tube")
+		v.SelFgColor = gocui.ColorDefault
+
+		gui.WriteModes(v)
+		// fmt.Fprintln(v, "tube")
 
 		if _, err := g.SetCurrentView("modes"); err != nil {
 			return err
@@ -199,7 +236,7 @@ func layout(g *gocui.Gui) error {
 
 	}
 
-	if v, err := g.SetView("lines", 0, maxY/2, maxX/4, maxY, 0); err != nil {
+	if v, err := g.SetView("lines", 0, maxY/2+1, maxX/4, maxY-1, 0); err != nil {
 		if !gocui.IsUnknownView(err) {
 			return err
 		}
@@ -215,7 +252,7 @@ func layout(g *gocui.Gui) error {
 
 	}
 
-	if v, err := g.SetView("main", maxX/4, 0, maxX*3/4, maxY, 0); err != nil {
+	if v, err := g.SetView("main", maxX/4+1, 0, maxX*3/4, maxY-1, 0); err != nil {
 		if !gocui.IsUnknownView(err) {
 			return err
 		}
@@ -224,19 +261,32 @@ func layout(g *gocui.Gui) error {
 		// v.SelBgColor = gocui.ColorGreen
 		// v.SelFgColor = gocui.ColorBlack
 		// fmt.Fprintln(v, "tube")
-		log.Info("test")
+		// log.Info("test")
 
 	}
 
-	if v, err := g.SetView("hello", maxX/2-10, maxY/2, maxX/2+10, maxY/2+5, 0); err != nil {
+	if v, err := g.SetView("unknown", maxX*3/4+1, 0, maxX-1, maxY-1, 0); err != nil {
 		if !gocui.IsUnknownView(err) {
 			return err
 		}
-		fmt.Fprintln(v, "Hello world!")
-		if _, err := g.SetCurrentView("hello"); err != nil {
-			return err
-		}
+		v.Title = "Unknown"
+		// v.Highlight = true
+		// v.SelBgColor = gocui.ColorGreen
+		// v.SelFgColor = gocui.ColorBlack
+		// fmt.Fprintln(v, "tube")
+		// log.Info("test")
+
 	}
+
+	// if v, err := g.SetView("hello", maxX/2-10, maxY/2, maxX/2+10, maxY/2+5, 0); err != nil {
+	// 	if !gocui.IsUnknownView(err) {
+	// 		return err
+	// 	}
+	// 	fmt.Fprintln(v, "Hello world!")
+	// 	if _, err := g.SetCurrentView("hello"); err != nil {
+	// 		return err
+	// 	}
+	// }
 	return nil
 }
 
@@ -259,18 +309,25 @@ func keybindings(g *gocui.Gui) error {
 		log.Panicln(err)
 	}
 
+
+	if err := g.SetKeybinding("", gocui.KeyArrowDown, gocui.ModNone, cursorDown); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("", gocui.KeyArrowUp, gocui.ModNone, cursorUp); err != nil {
+		return err
+	}
+
 	return nil
 }
 
 func nextView(g *gocui.Gui, v *gocui.View) error {
-	nextViewIndex := (activeViewIndex +1) % len(viewArr)
+	nextViewIndex := (activeViewIndex + 1) % len(viewArr)
 	name := viewArr[nextViewIndex]
 	out, err := g.View("main")
 	if err != nil {
 		return err
 	}
 	fmt.Fprintln(out, "Going from view "+v.Name()+" to "+name)
-
 
 	if _, err := setCurrentViewOnTop(g, name); err != nil {
 		return err
@@ -286,10 +343,39 @@ func nextView(g *gocui.Gui, v *gocui.View) error {
 	return nil
 }
 
-
 func setCurrentViewOnTop(g *gocui.Gui, name string) (*gocui.View, error) {
 	if _, err := g.SetCurrentView(name); err != nil {
 		return nil, err
 	}
 	return g.SetViewOnTop(name)
 }
+
+
+func cursorDown(g *gocui.Gui, v *gocui.View) error {
+	if v != nil {
+		cx, cy := v.Cursor()
+		if err := v.SetCursor(cx, cy+1); err != nil {
+			ox, oy := v.Origin()
+			if err := v.SetOrigin(ox, oy+1); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func cursorUp(g *gocui.Gui, v *gocui.View) error {
+	if v != nil {
+		ox, oy := v.Origin()
+		cx, cy := v.Cursor()
+		if err := v.SetCursor(cx, cy-1); err != nil && oy > 0 {
+			if err := v.SetOrigin(ox, oy-1); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+
+
