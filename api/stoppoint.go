@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/dghubble/sling"
@@ -41,3 +42,16 @@ func (s StopPointService) PointArrivals(stopPoint string) (*ArrivalsResponse, *h
 
 
 
+//latLongConverter takes in a lat and a long and returns a string which is a map of the lat and long that can be printed
+func latLongConverter( stopPointList *LineStopPoints) string {
+	// we need to take a list of stop points and turn them into a string that can be printed to the screen 
+	for _, stopPoint := range *stopPointList{
+		fmt.Println(stopPoint)
+
+
+	}
+	
+	return ""
+	
+
+}

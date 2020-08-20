@@ -274,3 +274,9 @@ type ServiceTypes struct {
 	Name string `json:"name"`
 	URI  string `json:"uri"`
 }
+
+//StationLocation contains the location of a station 
+type StationLocation struct {
+	longitude string 
+	latitude string 
+}

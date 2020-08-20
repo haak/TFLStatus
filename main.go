@@ -15,7 +15,6 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/awesome-gocui/gocui"
 	"github.com/haak/tflMap/api"
 	"github.com/haak/tflMap/gui"
 	log "github.com/sirupsen/logrus"
@@ -29,6 +28,12 @@ var (
 )
 
 func main() {
+
+	
+	fonts()
+	// fmt.Println("✓ Hello, 世界")
+    // // OR
+    // fmt.Println("\u2713 Hello, 世界")
 
 	stationCodeToName := make(map[string]string)
 	stationCodeToName["BST"] = "Baker Street"
@@ -65,8 +70,6 @@ func main() {
 	guiBoolPtr := flag.Bool("gui", false, "this is used to enable gui features")
 
 	logoBoolPtr := flag.Bool("logo", false, "this is used to enable logo features")
-
-
 
 	// listModes := *boolPtr
 
@@ -116,7 +119,7 @@ func main() {
 	}
 
 	if *guiBoolPtr == true {
-		createGui()
+		gui.CreateGui()
 	}
 
 	if *logoBoolPtr == true {
@@ -172,210 +175,4 @@ func CloseApp() {
 
 // https://api.tfl.gov.uk/Line/Route?ids=Bakerloo&serviceTypes=Regular
 // dont know exactly what this returns
-
-func createGui() {
-	g, err := gocui.NewGui(gocui.Output256, false)
-	if err != nil {
-		log.Panicln(err)
-	}
-	defer g.Close()
-
-	g.Cursor = true
-	g.Mouse = true
-
-	// This sets the manager func and deletes all keybindings and views
-	g.SetManagerFunc(layout)
-
-	// Call keydbindings to set keybindings for views
-	if err := keybindings(g); err != nil {
-		log.Panicln(err)
-	}
-
-	if err := g.MainLoop(); err != nil && !gocui.IsQuit(err) {
-		log.Panicln(err)
-	}
-}
-
-func layout(g *gocui.Gui) error {
-	maxX, maxY := g.Size()
-
-	if v, err := g.SetView("modes", 0, 0, maxX/4, maxY/2, 0); err != nil {
-		if !gocui.IsUnknownView(err) {
-			return err
-		}
-		g.Highlight = true
-		g.SelFgColor = gocui.ColorGreen
-
-		// Text colours
-		// g.FgColor = gocui.ColorBlack
-
-		// g.SelBgColor = gocui.ColorBlack
-		// This sets the fram colour
-
-		// This changes frame colour of the selected frame
-		g.SelFrameColor = gocui.ColorGreen
-		// g.SelFrameColor = gocui.ColorYellow
-
-		g.FrameColor = gocui.ColorDefault
-
-		v.Title = "Modes"
-		// v.Highlight = true
-		// v.SelBgColor = gocui.ColorGreen
-		// v.SelFgColor = gocui.ColorBlack
-
-		v.Highlight = true
-		v.SelBgColor = gocui.ColorGreen
-		v.SelFgColor = gocui.ColorDefault
-
-		gui.WriteModes(v)
-		// fmt.Fprintln(v, "tube")
-
-		if _, err := g.SetCurrentView("modes"); err != nil {
-			return err
-		}
-
-	}
-
-	if v, err := g.SetView("lines", 0, maxY/2+1, maxX/4, maxY-1, 0); err != nil {
-		if !gocui.IsUnknownView(err) {
-			return err
-		}
-		v.Title = "Lines"
-		v.Highlight = true
-		v.SelBgColor = gocui.ColorGreen
-		v.SelFgColor = gocui.ColorBlack
-		fmt.Fprintln(v, "tube")
-
-		if _, err := g.SetCurrentView("modes"); err != nil {
-			return err
-		}
-
-	}
-
-	if v, err := g.SetView("main", maxX/4+1, 0, maxX*3/4, maxY-1, 0); err != nil {
-		if !gocui.IsUnknownView(err) {
-			return err
-		}
-		v.Title = "Main"
-		// v.Highlight = true
-		// v.SelBgColor = gocui.ColorGreen
-		// v.SelFgColor = gocui.ColorBlack
-		// fmt.Fprintln(v, "tube")
-		// log.Info("test")
-
-	}
-
-	if v, err := g.SetView("unknown", maxX*3/4+1, 0, maxX-1, maxY-1, 0); err != nil {
-		if !gocui.IsUnknownView(err) {
-			return err
-		}
-		v.Title = "Unknown"
-		// v.Highlight = true
-		// v.SelBgColor = gocui.ColorGreen
-		// v.SelFgColor = gocui.ColorBlack
-		// fmt.Fprintln(v, "tube")
-		// log.Info("test")
-
-	}
-
-	// if v, err := g.SetView("hello", maxX/2-10, maxY/2, maxX/2+10, maxY/2+5, 0); err != nil {
-	// 	if !gocui.IsUnknownView(err) {
-	// 		return err
-	// 	}
-	// 	fmt.Fprintln(v, "Hello world!")
-	// 	if _, err := g.SetCurrentView("hello"); err != nil {
-	// 		return err
-	// 	}
-	// }
-	return nil
-}
-
-func quit(g *gocui.Gui, v *gocui.View) error {
-	return gocui.ErrQuit
-}
-
-// Plan for GUI
-// have a tab on the left for lines
-// then show stations somewhere
-// then show trains for that station
-
-func keybindings(g *gocui.Gui) error {
-
-	if err := g.SetKeybinding("", gocui.KeyCtrlC, gocui.ModNone, quit); err != nil {
-		log.Panicln(err)
-	}
-
-	if err := g.SetKeybinding("", gocui.KeyTab, gocui.ModNone, nextView); err != nil {
-		log.Panicln(err)
-	}
-
-
-	if err := g.SetKeybinding("", gocui.KeyArrowDown, gocui.ModNone, cursorDown); err != nil {
-		return err
-	}
-	if err := g.SetKeybinding("", gocui.KeyArrowUp, gocui.ModNone, cursorUp); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func nextView(g *gocui.Gui, v *gocui.View) error {
-	nextViewIndex := (activeViewIndex + 1) % len(viewArr)
-	name := viewArr[nextViewIndex]
-	out, err := g.View("main")
-	if err != nil {
-		return err
-	}
-	fmt.Fprintln(out, "Going from view "+v.Name()+" to "+name)
-
-	if _, err := setCurrentViewOnTop(g, name); err != nil {
-		return err
-	}
-
-	if nextViewIndex == 0 || nextViewIndex == 3 {
-		g.Cursor = true
-	} else {
-		g.Cursor = false
-	}
-
-	activeViewIndex = nextViewIndex
-	return nil
-}
-
-func setCurrentViewOnTop(g *gocui.Gui, name string) (*gocui.View, error) {
-	if _, err := g.SetCurrentView(name); err != nil {
-		return nil, err
-	}
-	return g.SetViewOnTop(name)
-}
-
-
-func cursorDown(g *gocui.Gui, v *gocui.View) error {
-	if v != nil {
-		cx, cy := v.Cursor()
-		if err := v.SetCursor(cx, cy+1); err != nil {
-			ox, oy := v.Origin()
-			if err := v.SetOrigin(ox, oy+1); err != nil {
-				return err
-			}
-		}
-	}
-	return nil
-}
-
-func cursorUp(g *gocui.Gui, v *gocui.View) error {
-	if v != nil {
-		ox, oy := v.Origin()
-		cx, cy := v.Cursor()
-		if err := v.SetCursor(cx, cy-1); err != nil && oy > 0 {
-			if err := v.SetOrigin(ox, oy-1); err != nil {
-				return err
-			}
-		}
-	}
-	return nil
-}
-
-
 

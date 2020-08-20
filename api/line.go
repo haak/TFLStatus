@@ -33,23 +33,26 @@ func (l *LineService) LineArrivals(line string) (*ArrivalsResponse, *http.Respon
 	if err != nil {
 		panic(err)
 	}
-	log.Info("there seems to be no response")
-	log.Info(ArrivalsResponse)
+	// log.Info("there seems to be no response")
+	// log.Info(ArrivalsResponse)
 	return ArrivalsResponse, resp, err
 }
 
-func (l *LineService) GetStopPoints(line string) {
+func (l *LineService) GetStopPoints(line string) *LineStopPoints {
 	//https://api.tfl.gov.uk/line/victoria/StopPoints
 	LineStopPointsResponse := new(LineStopPoints)
 	///Line/{id}/StopPoints
 	error := new(error)
 	path := line + "/StopPoints"
 	_, err := l.sling.New().Get(path).Receive(LineStopPointsResponse, error)
+
+	
 	// log.Info(resp)
-	log.Info(LineStopPointsResponse)
+	// log.Info(LineStopPointsResponse)
 	if err != nil {
 		// log.Panic("We have an error:", err)
 	}
+	return LineStopPointsResponse
 
 }
 
@@ -76,16 +79,18 @@ func (l *LineService) TimetableForStop(line, stopPoint string) {
 	// /Line/{ids}/Arrivals/{stopPointId}
 }
 
-func (l *LineService) GetLinesForMode(mode string) {
+func (l *LineService) GetLinesForMode(mode string) *ModeLines{
 	// /Line/Mode/{modes}
 	ModeLines := new(ModeLines)
 	tflError := new(TFLError)
 	path := "/line/mode/" + mode
-	resp, err := l.sling.New().Get(path).Receive(ModeLines, tflError)
+	l.sling.New().Get(path).Receive(ModeLines, tflError)
+	// resp, err := l.sling.New().Get(path).Receive(ModeLines, tflError)
 
-	log.Info(err)
-	log.Info(resp.Body)
-	log.Info(ModeLines)
+	// log.Info(err)
+	// log.Info(resp.Body)
+	// log.Info(ModeLines)
+	return ModeLines
 
 }
 

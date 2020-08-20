@@ -3,6 +3,7 @@ module github.com/haak/tflMap
 go 1.14
 
 require (
+	gioui.org v0.0.0-20200816085242-edef73f580b8
 	github.com/awesome-gocui/gocui v0.6.0
 	github.com/dghubble/sling v1.3.0
 	github.com/jesseduffield/gocui v0.3.0

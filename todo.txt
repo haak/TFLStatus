@@ -1,0 +1,3 @@
+Main section:
+show less about the train 
+show a map in the main section 
