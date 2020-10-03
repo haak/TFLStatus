@@ -38,15 +38,17 @@ func (l *LineService) LineArrivals(line string) (*ArrivalsResponse, *http.Respon
 	return ArrivalsResponse, resp, err
 }
 
+// GetStopPoints returns a thing
 func (l *LineService) GetStopPoints(line string) *LineStopPoints {
 	//https://api.tfl.gov.uk/line/victoria/StopPoints
+
 	LineStopPointsResponse := new(LineStopPoints)
 	///Line/{id}/StopPoints
 	error := new(error)
 	path := line + "/StopPoints"
 	_, err := l.sling.New().Get(path).Receive(LineStopPointsResponse, error)
 
-	
+
 	// log.Info(resp)
 	// log.Info(LineStopPointsResponse)
 	if err != nil {
