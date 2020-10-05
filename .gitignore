@@ -10,3 +10,4 @@ stations.txt
 api/urls.txt
 json/lines.json
 json/stations.json
+bin/TFLMap
